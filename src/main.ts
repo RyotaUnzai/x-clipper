@@ -2,7 +2,7 @@ import { Plugin, Notice, TFile, normalizePath, requestUrl, addIcon } from "obsid
 import {
 	X_ICON_ID, X_ICON_SVG,
 	DEFAULT_SETTINGS, EMOJI_REGEX, SANITIZE_REGEX, HASHTAG_REGEX,
-	type XClipperSettings, type TagHistoryEntry
+	type XClipperSettings
 } from "./constants";
 import { XClipperSettingTab } from "./settings-tab";
 import { ClipPostModal } from "./modal";
@@ -17,6 +17,19 @@ interface PostNoteData {
 	tags: string[];
 }
 
+interface FxTwitterApiResponse {
+	code?: number;
+	message?: string;
+	tweet?: {
+		author?: { name?: string; screen_name?: string };
+		text?: string;
+		media?: {
+			photos?: Array<{ url?: string }>;
+			videos?: Array<{ url?: string }>;
+		};
+	};
+}
+
 export default class XClipperPlugin extends Plugin {
 	settings: XClipperSettings = DEFAULT_SETTINGS;
 
@@ -25,13 +38,13 @@ export default class XClipperPlugin extends Plugin {
 
 		addIcon(X_ICON_ID, X_ICON_SVG);
 
-		this.addRibbonIcon(X_ICON_ID, "Clip Post", () => {
+		this.addRibbonIcon(X_ICON_ID, "Clip post", () => {
 			this.openClipPostModal();
 		});
 
 		this.addCommand({
 			id: "clip-post",
-			name: "Clip Post",
+			name: "Clip post",
 			callback: () => {
 				this.openClipPostModal();
 			},
@@ -58,7 +71,7 @@ export default class XClipperPlugin extends Plugin {
 	}
 
 	// ── fxtwitter APIでポストデータを取得 ──
-	async fetchPostData(screenName: string, statusId: string): Promise<Record<string, any>> {
+	async fetchPostData(screenName: string, statusId: string): Promise<FxTwitterApiResponse> {
 		const apis = [
 			`https://api.fxtwitter.com/${screenName}/status/${statusId}`,
 			`https://api.vxtwitter.com/${screenName}/status/${statusId}`,
@@ -88,7 +101,7 @@ export default class XClipperPlugin extends Plugin {
 			}
 		}
 
-		throw lastError;
+		throw lastError ?? new Error("All API requests failed");
 	}
 
 	// ── 履歴から使用回数の多いタグ上位を取得 ──
@@ -99,7 +112,7 @@ export default class XClipperPlugin extends Plugin {
 		for (const entry of history) {
 			const tags: string[] = Array.isArray(entry)
 				? entry
-				: ((entry as TagHistoryEntry).all || []);
+				: (entry.all || []);
 			for (const tag of tags) {
 				const clean = tag.replace(/^#/, "");
 				counts[clean] = (counts[clean] || 0) + 1;
@@ -138,7 +151,7 @@ export default class XClipperPlugin extends Plugin {
 			const lastEntry = history[history.length - 1];
 			const manualTags: string[] = Array.isArray(lastEntry)
 				? lastEntry
-				: ((lastEntry as TagHistoryEntry).manual || []);
+				: (lastEntry.manual || []);
 			lastUsedTags = manualTags.map((t) => t.replace(/^#/, ""));
 		}
 
@@ -216,9 +229,9 @@ export default class XClipperPlugin extends Plugin {
 					// ポスト本文からハッシュタグを自動抽出
 					const postTags: string[] = postText.match(HASHTAG_REGEX) || [];
 
-					console.log("[X Clipper] Post text:", postText);
-					console.log("[X Clipper] Extracted post tags:", postTags);
-					console.log("[X Clipper] User tags:", userTags);
+					console.debug("[X Clipper] Post text:", postText);
+					console.debug("[X Clipper] Extracted post tags:", postTags);
+					console.debug("[X Clipper] User tags:", userTags);
 
 					// 重複を除いて結合
 					const seen = new Set<string>();
@@ -232,7 +245,7 @@ export default class XClipperPlugin extends Plugin {
 						}
 					}
 
-					console.log("[X Clipper] Final parsedTags:", parsedTags);
+					console.debug("[X Clipper] Final parsedTags:", parsedTags);
 
 					const filePath = await this.savePostAsNote({
 						url: postUrl,
@@ -255,7 +268,7 @@ export default class XClipperPlugin extends Plugin {
 					if (shouldOpen) {
 						const file = this.app.vault.getAbstractFileByPath(filePath);
 						if (file && file instanceof TFile) {
-							this.app.workspace.getLeaf().openFile(file);
+							void this.app.workspace.getLeaf().openFile(file);
 						}
 					}
 				} catch (err) {
@@ -285,7 +298,7 @@ export default class XClipperPlugin extends Plugin {
 			}
 		}
 
-		throw lastError;
+		throw lastError ?? new Error("All retries failed");
 	}
 
 	// ── フォルダを再帰的に作成 ──
@@ -328,8 +341,8 @@ export default class XClipperPlugin extends Plugin {
 			attachmentsFolder = "attachments";
 		}
 
-		console.log("[X Clipper] postsFolder:", postsFolder);
-		console.log("[X Clipper] attachmentsFolder:", attachmentsFolder);
+		console.debug("[X Clipper] postsFolder:", postsFolder);
+		console.debug("[X Clipper] attachmentsFolder:", attachmentsFolder);
 
 		await this.ensureFolderExists(attachmentsFolder);
 

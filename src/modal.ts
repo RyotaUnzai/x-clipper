@@ -3,13 +3,13 @@ import { App, Modal, Setting, TextComponent, ButtonComponent, Notice } from "obs
 export class ClipPostModal extends Modal {
 	constructor(
 		app: App,
-		onSubmit: (url: string, shouldOpen: boolean, tags: string) => void,
+		onSubmit: (url: string, shouldOpen: boolean, tags: string) => Promise<void>,
 		openAfterSave = false,
 		suggestedTags: string[] = [],
 		lastUsedTags: string[] = []
 	) {
 		super(app);
-		this.setTitle("Clip Post");
+		this.setTitle("Clip post");
 
 		let url = "";
 		let tags = "";
@@ -156,11 +156,11 @@ export class ClipPostModal extends Modal {
 		new Setting(this.contentEl)
 			.addButton((btn) =>
 				btn
-					.setButtonText("Clip Post")
+					.setButtonText("Clip post")
 					.setCta()
 					.onClick(() => {
 						this.close();
-						onSubmit(url, shouldOpen, tags);
+						void onSubmit(url, shouldOpen, tags);
 					})
 			)
 			.addButton((btn) =>
