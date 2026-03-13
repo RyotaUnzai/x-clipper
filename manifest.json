@@ -1,6 +1,6 @@
 {
 	"id": "x-clipper",
-	"name": "Obsidian X Clipper",
+	"name": "X Clipper",
 	"version": "1.0.0",
 	"minAppVersion": "1.5.12",
 	"description": "Save X (Twitter) posts to Obsidian with images and videos included.",
