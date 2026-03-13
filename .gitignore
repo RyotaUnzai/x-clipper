@@ -1,0 +1,8 @@
+# build output
+main.js
+
+# npm
+node_modules
+
+# user data
+data.json
