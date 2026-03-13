@@ -6,3 +6,6 @@ node_modules
 
 # user data
 data.json
+
+# release packages
+Release/
