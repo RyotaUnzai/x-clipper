@@ -5,7 +5,7 @@ X（Twitter）のポストを、画像・動画・ハッシュタグを含めて
 Japanese README → [README.ja.md](README.ja.md)
 
 
-![](assets/post_page-tab.png)
+![](./assets/post_page.png)
 
 
 
@@ -55,6 +55,7 @@ Japanese README → [README.ja.md](README.ja.md)
 4. Obsidian を再起動し、**Settings → Community plugins** でプラグインを有効化します
 
 ## 使い方
+![](./assets/clip_post_dialog.png)
 
 1. リボンの **𝕏 アイコン** をクリックするか、コマンドパレットから **Clip Post** を実行します
 2. 投稿URLを貼り付けます  

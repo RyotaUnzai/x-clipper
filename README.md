@@ -4,7 +4,7 @@ Save X (Twitter) posts to Obsidian as Markdown notes — with images, videos, an
 
 English README → [README.md](README.md)
 
-![](assets/post_page-tab.png)
+![](./assets/post_page.png)
 
 ## Features
 
@@ -34,6 +34,8 @@ English README → [README.md](README.md)
 4. Restart Obsidian and enable the plugin in **Settings → Community plugins**
 
 ## Usage
+
+![](./assets/clip_post_dialog.png)
 
 1. Click the **𝕏 icon** in the ribbon, or run the **Clip Post** command from the command palette
 2. Paste the post URL (e.g. `https://x.com/username/status/123456789`)
