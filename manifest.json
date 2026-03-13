@@ -3,7 +3,7 @@
 	"name": "X Clipper",
 	"version": "1.0.0",
 	"minAppVersion": "1.5.12",
-	"description": "Save X (Twitter) posts to Obsidian with images and videos included.",
+	"description": "Save X (Twitter) posts as notes with images and videos included.",
 	"author": "UNPySide",
 	"authorUrl": "https://unpyside.com/",
 	"isDesktopOnly": false
