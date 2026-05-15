@@ -1,7 +1,7 @@
 {
   "name": "x-clipper",
-  "version": "1.0.0",
-  "description": "Save X (Twitter) posts to Obsidian with images and videos included.",
+  "version": "1.0.1",
+  "description": "Save X (Twitter) posts with images and videos included.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
@@ -15,7 +15,6 @@
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
-    "builtin-modules": "3.3.0",
     "esbuild": "0.17.3",
     "eslint": "^8.57.1",
     "obsidian": "latest",

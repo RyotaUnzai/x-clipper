@@ -1,6 +1,6 @@
 # X Clipper
 
-Save X (Twitter) posts to Obsidian as Markdown notes — with images, videos, and hashtags automatically included.
+Save X (Twitter) posts with images and videos included.
 
 English README → [README.md](README.md)
 
